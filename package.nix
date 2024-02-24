@@ -86,7 +86,13 @@ in
         --replace /usr/bin/gpasswd ${shadow}/bin/gpasswd \
         --replace /usr/sbin/groupadd ${shadow}/bin/groupadd \
         --replace 'DEFAULT_SIZES = "1600x1200,3840x2560"' 'DEFAULT_SIZES = "2160x1440,3840x2160"' \
-        --replace 'FIRST_X_DISPLAY_NUMBER = 20' 'FIRST_X_DISPLAY_NUMBER = 1'
+        --replace 'FIRST_X_DISPLAY_NUMBER = 20' 'FIRST_X_DISPLAY_NUMBER = 0' \
+        --replace 'while os.path.exists(X_LOCK_FILE_TEMPLATE % display):' '# while os.path.exists(X_LOCK_FILE_TEMPLATE % display):' \
+        --replace 'display += 1' '# display += 1' \
+        --replace 'self._launch_server(server_args)' '# self._launch_server(server_args)' \
+        --replace 'if not self._launch_pre_session():' 'display = self.get_unused_display_number() # if not self._launch_pre_session():' \
+        --replace '  # If there was no pre-session script, launch the session immediately.' 'self.child_env["DISPLAY"] = ":%d" % display # If there was no pre-session script, launch the session immediately.' \
+        --replace 'self.launch_desktop_session()' '# self.launch_desktop_session()'
       substituteInPlace $out/opt/google/chrome-remote-desktop/Xsession \
         --replace /etc/X11/Xsession /run/current-system/sw/bin/startplasma-x11
       runHook postPatch
