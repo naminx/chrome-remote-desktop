@@ -56,13 +56,15 @@ _There are probably some very clever reasons to run it the default way, and chan
 
 7. Confirm that you have a file `host#<hash>.json` in `~/.config/chrome-remote-desktop/`
 
-8. Restart chrome-remote-desktop service.
+8. Run `xhost +`. You will have to find a way to do this every time you login. I am still seaching.
+
+9. Restart chrome-remote-desktop service.
 
 ```
     sudo systemctl restart chrome-remote-desktop@<your-user-name>.service
 ```
 
-9. Refresh https://remotedesktop.google.com/access, your host should be shown as "Online".
+10. Refresh https://remotedesktop.google.com/access, your host should be shown as "Online".
 
 ## Troubleshooting Guide
 
