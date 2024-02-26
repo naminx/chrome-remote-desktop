@@ -1,9 +1,10 @@
 # Chrome Remote Desktop for NixOS:
 
-## ** FOR KDE PLASMA/X11 ONLY **
+## ** FOR XORG ONLY **
 
-Gnome/X11 is not tested but should be possible by replacing `startplasma-11` in `package.nix` with an appropriate command.
 Wayland is not supported because you have to log out local Wayland session in order to connect remotely, or else you get only a black screen.
+
+KDE Plasma settings uses an over version `118.0.5993.9`, due to the latest requires GSettings schemas.
 
 ## Security Warning
 
@@ -69,3 +70,5 @@ _There are probably some very clever reasons to run it the default way, and chan
 ## Troubleshooting Guide
 
 `journalctl -b -u chrome-remote-desktop@<your-user-name>` gives useful information most of the time. Additional hints may be obtained by running Chromium/Google Chrome from command line to see error messages.
+
+If `journalctl` gives error about `MIT-MAGIC-COOKIE-x` or cannot get authorization, one possible cause is you forget to do run `xhost +`.

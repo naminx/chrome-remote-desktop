@@ -17,20 +17,19 @@
   llvmPackages_17,
   libcxx,
   xdummy,
+  callPackage,
+  pkgs,
   ...
 }: let
   replacePrefix = "/opt/google/chrome-remote-desktop";
+  nativeCRD = callPackage ./native/default.nix pkgs;
 in
   stdenvNoCC.mkDerivation rec {
     name = "chrome-remote-desktop";
-    # Get the latest version from:
-    # https://dl.google.com/linux/chrome-remote-desktop/deb/dists/stable/main/binary-amd64/Packages
     version = "118.0.5993.9";
     src = fetchurl {
-      url = "https://dl.google.com/linux/chrome-remote-desktop/deb/pool/main/c/chrome-remote-desktop/chrome-remote-desktop_${version}_amd64.deb";
+      url = "https://deb.rug.nl/ppa/mirror/dl.google.com/linux/chrome-remote-desktop/deb/pool/main/c/chrome-remote-desktop/chrome-remote-desktop_${version}_amd64.deb";
       hash = "sha256-8EcWktLxTTgiWReKnVSr1TJV3FKM5P8ixQUQA1Q4zew=";
-      # url = "https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb";
-      # hash = "sha256-HA1sMR/v3b7u1GaCTzqdAV4Ov5mrRoYU4vPdyEYnX2Y=";
     };
 
     nativeBuildInputs = [
@@ -52,7 +51,6 @@ in
       xorg.libXrandr
       xorg.libXtst
       libcxx
-      xdummy
     ];
 
     dontBuild = true;
@@ -93,12 +91,8 @@ in
         --replace 'if not self._launch_pre_session():' 'display = self.get_unused_display_number() # if not self._launch_pre_session():' \
         --replace '  # If there was no pre-session script, launch the session immediately.' 'self.child_env["DISPLAY"] = ":%d" % display # If there was no pre-session script, launch the session immediately.' \
         --replace 'self.launch_desktop_session()' '# self.launch_desktop_session()'
-      substituteInPlace $out/opt/google/chrome-remote-desktop/Xsession \
-        --replace /etc/X11/Xsession /run/current-system/sw/bin/startplasma-x11
       runHook postPatch
     '';
-    #   --replace '"Xorg"' '"${xdummy}/bin/xdummy"' \
-    #   --replace 'self.use_xvfb = self.should_use_xvfb()' 'self.use_xvfb = False # self.should_use_xvfb()' \
 
     installPhase = ''
       runHook preInstall
