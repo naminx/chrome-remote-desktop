@@ -4,7 +4,7 @@
 
 Wayland is not supported because you have to log out local Wayland session in order to connect remotely, or else you get only a black screen.
 
-KDE Plasma settings uses an over version `118.0.5993.9`, due to the latest requires GSettings schemas.
+KDE Plasma settings uses an older version `118.0.5993.9`, due to the latest requires GSettings schemas.
 
 ## Security Warning
 
