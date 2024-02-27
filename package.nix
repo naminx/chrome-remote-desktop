@@ -14,29 +14,32 @@
   python3,
   shadow,
   xorg,
-  llvmPackages_17,
   libcxx,
-  xdummy,
   callPackage,
   pkgs,
+  wrapGAppsHook,
+  makeWrapper,
+  gsettings-desktop-schemas,
   ...
 }: let
   replacePrefix = "/opt/google/chrome-remote-desktop";
-  nativeCRD = callPackage ./native/default.nix pkgs;
 in
   stdenvNoCC.mkDerivation rec {
     name = "chrome-remote-desktop";
-    version = "118.0.5993.9";
+    version = "122.0.6261.0";
     src = fetchurl {
       url = "https://deb.rug.nl/ppa/mirror/dl.google.com/linux/chrome-remote-desktop/deb/pool/main/c/chrome-remote-desktop/chrome-remote-desktop_${version}_amd64.deb";
-      hash = "sha256-8EcWktLxTTgiWReKnVSr1TJV3FKM5P8ixQUQA1Q4zew=";
+      hash = "sha256-CfqjCq8jgnlzW5Ep+BDaswHMrV8xs08Fi7uKkTcHNFU="; # 122.0.6261.0
     };
 
     nativeBuildInputs = [
       autoPatchelfHook
+      wrapGAppsHook
+      makeWrapper
     ];
 
     buildInputs = [
+      gsettings-desktop-schemas
       glib
       gtk3
       libdrm
@@ -100,6 +103,9 @@ in
       for i in "$out/opt/google/chrome-remote-desktop/"*; do
         if [[ ! -x "$i" ]]; then
           continue
+        fi
+        if [[ ! -d "$i" ]]; then
+          wrapProgram "$i" --set XDG_DATA_DIRS "${lib.makeLibraryPath [ "$GSETTINGS_SCHEMAS_PATH" ]}"
         fi
         ln -s "$i" "$out/bin/"
       done

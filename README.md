@@ -2,9 +2,7 @@
 
 ## ** FOR XORG ONLY **
 
-Wayland is not supported because you have to log out local Wayland session in order to connect remotely, or else you get only a black screen.
-
-KDE Plasma settings uses an older version `118.0.5993.9`, due to the latest requires GSettings schemas.
+Tested on KDE/X11 & GNOME/X11. Wayland is not supported because you have to log out local Wayland session in order to connect remotely or else you get only a black screen. That defeats my purpose to continue work I left open at home while I am out. If I have to logout, then I cannot let my PC do something useful, for example, video rendering.
 
 ## Security Warning
 
@@ -69,6 +67,8 @@ _There are probably some very clever reasons to run it the default way, and chan
 
 ## Troubleshooting Guide
 
-`journalctl -b -u chrome-remote-desktop@<your-user-name>` gives useful information most of the time. Additional hints may be obtained by running Chromium/Google Chrome from command line to see error messages.
+`journalctl -b -u chrome-remote-desktop@<your-user-name>` is very useful to debug. Additional hints may be obtained by running Chromium/Google Chrome from command line to see error messages.
 
-If `journalctl` gives error about `MIT-MAGIC-COOKIE-x` or cannot get authorization, one possible cause is you forget to do run `xhost +`.
+If Chromium/Google Chrome complains that it cannot find a script file, it is likely that you have not created the symlink mention in item 3.
+
+If `journalctl` gives error about `MIT-MAGIC-COOKIE-x` or cannot get authorization, one possible cause is you forget to do run `xhost +` in item 8.
