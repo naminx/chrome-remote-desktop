@@ -1,6 +1,6 @@
 # Chrome Remote Desktop for NixOS:
 
-## ** FOR XORG ONLY **
+## ** FOR X11 ONLY **
 
 Tested on KDE/X11 & GNOME/X11. Wayland is not supported because you have to log out local Wayland session in order to connect remotely or else you get only a black screen. That defeats my purpose to continue work I left open at home while I am out. If I have to logout, then I cannot let my PC do something useful, for example, video rendering.
 
